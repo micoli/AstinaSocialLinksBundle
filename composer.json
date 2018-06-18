@@ -1,5 +1,5 @@
 {
-    "name": "astina/social-links-bundle",
+    "name": "micoli/social-links-bundle",
     "description": "Symfony bundle that is using SocialLinks to generate share links for social networks.",
     "keywords": ["astina", "social", "links", "share"],
     "type": "symfony-bundle",
@@ -13,8 +13,7 @@
     "minimum-stability": "stable",
     "license": "MIT",
     "require": {
-        "symfony/symfony": "~2.3",
-        "sensio/framework-extra-bundle": ">=2.3",
+        "symfony/symfony": "^3.4|^4.1",
         "social-links/social-links": "^1.13"
     },
     "require-dev": {
