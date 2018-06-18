@@ -2,10 +2,13 @@
 
 namespace Astina\Bundle\SocialLinksBundle\Twig;
 
+
 use SocialLinks\Page;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
+
 
 /**
  * Class SocialLinksExtension
@@ -28,9 +31,11 @@ class SocialLinksExtension extends \Twig_Extension
     /**
      * @param FragmentHandler $handler
      */
-    public function __construct(FragmentHandler $handler)
+    public function __construct(FragmentHandler $handler,RequestStack $requestStack)
     {
         $this->handler = $handler;
+        $this->request = $requestStack->getCurrentRequest();
+
     }
 
     public function getFunctions()
@@ -79,18 +84,6 @@ class SocialLinksExtension extends \Twig_Extension
         ));
 
         return $this->handler->render($reference);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return $this
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
-
-        return $this;
     }
 
     public function getName()
