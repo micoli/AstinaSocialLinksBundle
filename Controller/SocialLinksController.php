@@ -26,4 +26,17 @@ class SocialLinksController extends Controller
             'linkText'   => $options['linkText']
         ));
     }
+
+    /**
+     * @param array $options
+     *
+     * @return Response
+     */
+    public function socialLinksAction($options)
+    {
+        return $this->render('AstinaSocialLinksBundle:SocialLinks:socialLinks.html.twig', array(
+            'providers'  => $options['providers']
+        ));
+    }
+
 }
