@@ -1,0 +1,10 @@
+{% spaceless %}
+    {%- for provider in providers %}
+        <a href="{{ provider.socialUrl }}"
+            {%- for key, attribute in provider.attributes %}
+             {{ key }}="{{ attribute }}"
+            {%- endfor %}
+         >{{ provider.linkText }}{%- if provider.shareCount != -1 %}[{{ provider.shareCount }}]{%- endif %}
+     </a>
+     {%- endfor %}
+{% endspaceless %}
