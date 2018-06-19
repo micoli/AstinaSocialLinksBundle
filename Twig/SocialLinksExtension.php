@@ -41,7 +41,8 @@ class SocialLinksExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'social_link' => new \Twig_SimpleFunction('social_link', array($this, 'getSocialLink'), array('is_safe' => array('html'))),
+            'social_link' => new \Twig_SimpleFunction('social_link', array($this, 'getSocialLink'), array('pre_escape' => 'html','is_safe' => array('html'))),
+            'social_links' => new \Twig_SimpleFunction('social_links', array($this, 'getSocialLinks'), array('pre_escape' => 'html','is_safe' => array('html'))),
         );
     }
 
@@ -80,6 +81,50 @@ class SocialLinksExtension extends \Twig_Extension
                 'socialUrl'  => $page->$provider->shareUrl,
                 'attributes' => $attributes,
                 'linkText'   => $linkText
+            )
+        ));
+
+        return $this->handler->render($reference);
+    }
+
+    /**
+     * @param string $provider Provider
+     * @param string $url      Url to share (by default it resolves to current url)
+     * @param array $options   Options to set
+     *                         ['title' => null, 'text' => null, 'attributes' => null]
+     * @param string $linkText Link text
+     *
+     * @return \InvalidArgumentException|string
+     */
+    public function getSocialLinks($providers = array(), $url = null, $options = array(), $linkText = null)
+    {
+        if (!$url) {
+            $url = $this->request->getUri();
+        }
+
+        $page = new Page(array(
+            'url'   => $url,
+            'title' => isset($options['title']) ? $options['title'] : null,
+            'text'  => isset($options['text']) ? $options['text'] : null
+        ));
+        
+        $page->shareCount($providers);
+
+        $attributes = isset($options['attributes']) ? $options['attributes'] : array();
+        $attributes['target'] = isset($attributes['target']) ? $attributes['target'] : '_blank';
+
+        $reference = new ControllerReference('AstinaSocialLinksBundle:SocialLinks:socialLinks', array(
+            'options' => array(
+               'providers'=>array_map(
+                    function($provider) use ($page,$attributes,$linkText){
+                        return array(
+                            'socialUrl'  => $page->$provider->shareUrl,
+                            'shareCount'  => $page->$provider->shareCount ?: -1,
+                            'attributes' => $attributes,
+                            'linkText'   => $linkText ?: $provider
+                        );
+                    },$providers
+                )
             )
         ));
 
