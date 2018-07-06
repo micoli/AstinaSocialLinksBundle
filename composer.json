@@ -13,7 +13,7 @@
     "minimum-stability": "stable",
     "license": "MIT",
     "require": {
-        "symfony/symfony": "^3.4|^4.1",
+        "symfony/symfony": "^3.4|^4.",
         "social-links/social-links": "^1.13"
     },
     "require-dev": {
